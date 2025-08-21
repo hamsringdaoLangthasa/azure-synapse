@@ -1,0 +1,104 @@
+{
+	"name": "Init",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "sparkpool10001",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "a89381a4-4ea2-4cd8-8c5c-4329b0c5b995"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/a2b28c85-1948-4263-90ca-bade2bac4df4/resourceGroups/kml_rg_main-26422969aef041ac/providers/Microsoft.Synapse/workspaces/synapse10001ws/bigDataPools/sparkpool10001",
+				"name": "sparkpool10001",
+				"type": "Spark",
+				"endpoint": "https://synapse10001ws.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool10001",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.5",
+				"nodeCount": 3,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"!pip install faker"
+				],
+				"execution_count": 11
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"import pandas as pd\n",
+					"\n",
+					"import csv\n",
+					"import random\n",
+					"from faker import Faker\n",
+					"\n",
+					"fake = Faker()\n",
+					"workdepts = ['A00', 'B01', 'C02', 'D03', 'E04', 'F05']\n",
+					"jobs = ['Manager', 'Analyst', 'Clerk', 'Sales', 'Engineer', 'Technician']\n",
+					"\n",
+					"rows = []\n",
+					"for i in range(1, 1001):\n",
+					"    rows.append((\n",
+					"        f\"E{i:04d}\",\n",
+					"        fake.first_name(),\n",
+					"        random.choice(\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"),\n",
+					"        fake.last_name(),\n",
+					"        random.choice(workdepts),\n",
+					"        fake.phone_number(),\n",
+					"        fake.date_between(start_date='-30y', end_date='today').strftime('%Y-%m-%d'),\n",
+					"        random.choice(jobs),\n",
+					"        random.randint(10, 20),\n",
+					"        random.choice(['M', 'F']),\n",
+					"        fake.date_of_birth(minimum_age=25, maximum_age=65).strftime('%Y-%m-%d'),\n",
+					"        round(random.uniform(30000, 120000), 2),\n",
+					"        round(random.uniform(1000, 10000), 2),\n",
+					"        round(random.uniform(0, 5000), 2)\n",
+					"    ))\n",
+					"\n",
+					"columns = ['EMPNO','FIRSTNME','MIDINIT','LASTNAME','WORKDEPT','PHONENO',\n",
+					"           'HIREDATE','JOB','EDLEVEL','SEX','BIRTHDATE','SALARY','BONUS','COMM']\n",
+					"\n",
+					"df = spark.createDataFrame(rows, columns)\n",
+					"\n",
+					"output_path = \"abfss://store@adls10001.dfs.core.windows.net/employee/\"\n",
+					"\n",
+					"df.write.mode(\"overwrite\").option(\"header\", \"true\").csv(output_path)\n",
+					""
+				],
+				"execution_count": 10
+			}
+		]
+	}
+}

@@ -1,0 +1,292 @@
+{
+	"name": "spark101",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "sparkpool10001",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "19830383-05b9-48d6-a13c-249272d41370"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/a2b28c85-1948-4263-90ca-bade2bac4df4/resourceGroups/kml_rg_main-26422969aef041ac/providers/Microsoft.Synapse/workspaces/synapse10001ws/bigDataPools/sparkpool10001",
+				"name": "sparkpool10001",
+				"type": "Spark",
+				"endpoint": "https://synapse10001ws.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool10001",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.5",
+				"nodeCount": 3,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# **<mark>Spark 101</mark>**"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"spark"
+				],
+				"execution_count": 12
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df = spark.read.format(\"csv\") \\\n",
+					"    .option(\"header\", \"true\") \\\n",
+					"    .load(\"abfss://store@adls10001.dfs.core.windows.net/employee/*.csv\")\n",
+					"\n",
+					"employee_df.show(5)"
+				],
+				"execution_count": 16
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## <mark>General Info & Metadata</mark>"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.columns"
+				],
+				"execution_count": 17
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.dtypes"
+				],
+				"execution_count": 18
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.schema"
+				],
+				"execution_count": 20
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.printSchema()"
+				],
+				"execution_count": 22
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.inputFiles()"
+				],
+				"execution_count": 23
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.isLocal()"
+				],
+				"execution_count": 28
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.isStreaming"
+				],
+				"execution_count": 26
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"print(employee_df.is_cached)\n",
+					"\n",
+					"employee_df.cache()\n",
+					"\n",
+					"print(employee_df.is_cached)\n",
+					"\n",
+					"print(employee_df.count())\n",
+					"\n",
+					"print(employee_df.is_cached)\n",
+					"print(employee_df.storageLevel)\n",
+					"\n",
+					"employee_df.unpersist()\n",
+					"\n",
+					"print(employee_df.is_cached)"
+				],
+				"execution_count": 41
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"print(employee_df.storageLevel)\n",
+					"employee_df.storageLevel"
+				],
+				"execution_count": 45
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## <mark>Actions</mark>"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.limit(5).collect()"
+				],
+				"execution_count": 33
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.count()"
+				],
+				"execution_count": 34
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.first()"
+				],
+				"execution_count": 53
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"print(employee_df.head())\n",
+					"print(employee_df.head(5))"
+				],
+				"execution_count": 55
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.take(5)"
+				],
+				"execution_count": 49
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.tail(5)"
+				],
+				"execution_count": 57
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.show(5, False)"
+				],
+				"execution_count": 59
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.toPandas()"
+				],
+				"execution_count": 60
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"for r in employee_df.limit(5).toLocalIterator(): print(r)"
+				],
+				"execution_count": 76
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.toJSON().first()"
+				],
+				"execution_count": 68
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.select(\"EMPNO\").toDF(\"employee_id\").show(5)"
+				],
+				"execution_count": 73
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"help(employee_df.toDF)"
+				],
+				"execution_count": 74
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## <mark>Persistence</mark>"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					""
+				],
+				"execution_count": null
+			}
+		]
+	}
+}

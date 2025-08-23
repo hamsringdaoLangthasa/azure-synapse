@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "e528c7f8-db2a-4c5b-bf51-247109b85f58"
+				"spark.autotune.trackingId": "282b2d9c-51ab-4f67-9e5f-51adabcbbff6"
 			}
 		},
 		"metadata": {
@@ -110,7 +110,7 @@
 					"        round(random.uniform(0, 5000), 2)\n",
 					"    ))\n",
 					"\n",
-					"columns = ['EMPNO','FIRSTNME','MIDINIT','LASTNAME','WORKDEPT','PHONENO',\n",
+					"columns = ['EMPNO','FIRSTNAME','MIDINIT','LASTNAME','WORKDEPT','PHONENO',\n",
 					"           'HIREDATE','JOB','EDLEVEL','SEX','BIRTHDATE','SALARY','BONUS','COMM']\n",
 					"\n",
 					"df = spark.createDataFrame(rows, columns)\n",
@@ -120,7 +120,7 @@
 					"df.write.mode(\"overwrite\").option(\"header\", \"true\").csv(output_path)\n",
 					""
 				],
-				"execution_count": 17
+				"execution_count": 60
 			},
 			{
 				"cell_type": "code",
@@ -138,7 +138,7 @@
 					"\n",
 					"employee_df.show(5)"
 				],
-				"execution_count": 19
+				"execution_count": 63
 			},
 			{
 				"cell_type": "markdown",
@@ -255,7 +255,7 @@
 				"source": [
 					"employee_df.count()"
 				],
-				"execution_count": 30
+				"execution_count": 56
 			},
 			{
 				"cell_type": "code",
@@ -397,12 +397,77 @@
 			{
 				"cell_type": "code",
 				"source": [
-					"df_local_ckpt = employee_df.localCheckpoint()\n",
+					"df_local_ckpt = employee_df.localCheckpoint()"
+				],
+				"execution_count": 53
+			},
+			{
+				"cell_type": "code",
+				"source": [
 					"\n",
 					"# Action\n",
 					"df_local_ckpt.show()"
 				],
-				"execution_count": 52
+				"execution_count": 54
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## <mark>Column Operations</mark>"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.columns"
+				],
+				"execution_count": 64
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"from pyspark.sql.functions import concat_ws\n",
+					"\n",
+					"employee_df.select(\"EMPNO\", concat_ws(\" \", \"FIRSTNAME\", \"LASTNAME\").alias(\"FULLNAME\")).show(5)"
+				],
+				"execution_count": 78
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"from pyspark.sql.functions import col\n",
+					"\n",
+					"employee_df.selectExpr(\"EMPNO\", \"FIRSTNAME || ' ' || LASTNAME as FULLNAME\").show(5)"
+				],
+				"execution_count": 83
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.withColumn(\"EMP_ID\", col(\"EMPNO\")).show(5)"
+				],
+				"execution_count": 93
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.withColumnRenamed(\"EMPNO\", \"EMP_ID\").show(5)"
+				],
+				"execution_count": 94
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"employee_df.alias(\"Employee\")"
+				],
+				"execution_count": 98
 			},
 			{
 				"cell_type": "code",

@@ -7,7 +7,7 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "sparkpool10001",
+			"referenceName": "sp2025082301",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "0901a681-5b10-42a4-a653-cae4595d8ca7"
+				"spark.autotune.trackingId": "ac63f2f7-d2c4-44f2-9296-85712c4e31b3"
 			}
 		},
 		"metadata": {
@@ -34,10 +34,10 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/a2b28c85-1948-4263-90ca-bade2bac4df4/resourceGroups/kml_rg_main-26422969aef041ac/providers/Microsoft.Synapse/workspaces/synapse10001ws/bigDataPools/sparkpool10001",
-				"name": "sparkpool10001",
+				"id": "/subscriptions/a2b28c85-1948-4263-90ca-bade2bac4df4/resourceGroups/kml_rg_main-89d24b414ebf4132/providers/Microsoft.Synapse/workspaces/sp-2025082301-ws/bigDataPools/sp2025082301",
+				"name": "sp2025082301",
 				"type": "Spark",
-				"endpoint": "https://synapse10001ws.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkpool10001",
+				"endpoint": "https://sp-2025082301-ws.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sp2025082301",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
@@ -69,18 +69,18 @@
 				"source": [
 					"spark"
 				],
-				"execution_count": 12
+				"execution_count": 5
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df = spark.read.format(\"csv\") \\\n",
 					"    .option(\"header\", \"true\") \\\n",
-					"    .load(\"abfss://store@adls10001.dfs.core.windows.net/employee/*.csv\")\n",
+					"    .load(\"abfss://store@sp2025082301adls.dfs.core.windows.net/employee/*.csv\")\n",
 					"\n",
 					"employee_df.show(5)"
 				],
-				"execution_count": 16
+				"execution_count": 15
 			},
 			{
 				"cell_type": "markdown",
@@ -100,49 +100,49 @@
 				"source": [
 					"employee_df.columns"
 				],
-				"execution_count": 17
+				"execution_count": 7
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.dtypes"
 				],
-				"execution_count": 18
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.schema"
 				],
-				"execution_count": 20
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.printSchema()"
 				],
-				"execution_count": 22
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.inputFiles()"
 				],
-				"execution_count": 23
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.isLocal()"
 				],
-				"execution_count": 28
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.isStreaming"
 				],
-				"execution_count": 26
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -162,7 +162,7 @@
 					"\n",
 					"print(employee_df.is_cached)"
 				],
-				"execution_count": 41
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -170,7 +170,7 @@
 					"print(employee_df.storageLevel)\n",
 					"employee_df.storageLevel"
 				],
-				"execution_count": 45
+				"execution_count": null
 			},
 			{
 				"cell_type": "markdown",
@@ -190,21 +190,21 @@
 				"source": [
 					"employee_df.limit(5).collect()"
 				],
-				"execution_count": 33
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.count()"
 				],
-				"execution_count": 34
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.first()"
 				],
-				"execution_count": 53
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -212,63 +212,63 @@
 					"print(employee_df.head())\n",
 					"print(employee_df.head(5))"
 				],
-				"execution_count": 55
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.take(5)"
 				],
-				"execution_count": 49
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.tail(5)"
 				],
-				"execution_count": 57
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.show(5, False)"
 				],
-				"execution_count": 59
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.toPandas()"
 				],
-				"execution_count": 60
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"for r in employee_df.limit(5).toLocalIterator(): print(r)"
 				],
-				"execution_count": 76
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.toJSON().first()"
 				],
-				"execution_count": 68
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"employee_df.select(\"EMPNO\").toDF(\"employee_id\").show(5)"
 				],
-				"execution_count": 73
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
 				"source": [
 					"help(employee_df.toDF)"
 				],
-				"execution_count": 74
+				"execution_count": null
 			},
 			{
 				"cell_type": "markdown",

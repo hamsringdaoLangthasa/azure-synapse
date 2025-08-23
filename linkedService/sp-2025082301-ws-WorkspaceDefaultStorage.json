@@ -1,0 +1,15 @@
+{
+	"name": "sp-2025082301-ws-WorkspaceDefaultStorage",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"typeProperties": {
+			"url": "https://sp2025082301adls.dfs.core.windows.net"
+		},
+		"type": "AzureBlobFS",
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		},
+		"annotations": []
+	}
+}
